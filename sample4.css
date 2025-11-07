@@ -1,0 +1,40 @@
+address {
+	margin: 0px;
+	padding: 30px;
+	line-height: 1.0em;
+	font-size: 14px;
+	font-family: "Arial","Times New Roman",serif!important;
+}
+address,
+address a:link,
+address a:active,
+address a:visited,
+address a:hover {
+	color: #99c;
+}
+address a {
+	text-decoration: none;
+	border-bottom: 1px solid #ccd;
+}
+ul.photos {
+	padding: 0px;
+	margin: 0px auto;
+	text-align: left;
+	list-style: none;
+	width: 100%;	
+}
+ul.photos li {
+	display: inline;
+	width: 160px;
+	height: 160px;
+}
+ul.photos a.horizontal img,
+ul.photos a.effectable img {
+	padding:  10px;
+	
+
+}
+ul.photos a.vertical img {
+	padding: 0;	
+
+}

@@ -1,0 +1,36 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.barysh-eparhia.ru$ [NC]
+RewriteRule ^(.*)$ http://barysh-eparhia.ru/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^www.xn----7sbabb1awl2cfgf3d7a7b3dh.xn--p1ai$ [NC]
+RewriteRule ^(.*)$ http://barysh-eparhia.ru/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^xn----7sbabb1awl2cfgf3d7a7b3dh.xn--p1ai$ [NC]
+RewriteRule ^(.*)$ http://barysh-eparhia.ru/$1 [R=301,L]
+
+AddHandler application/x-httpd-php .php .htm .html
+AddDefaultCharset windows-1251
+
+ErrorDocument 404 /no.php 
+php_value session.save_path /home/host1409556/barysh-eparhia.ru/tmp_session
+php_value session.gc_maxlifetime 604800
+php_value session.cookie_lifetime 604800
+
+php_flag display_errors Off
+php_flag display_startup_errors Off
+php_flag track_errors Off
+php_value error_reporting 0
+php_flag warn_plus_overloading Off
+
+php_flag magic_quotes_gpc 0
+php_flag magic_quotes_runtime 0
+
+php_value max_execution_time 100
+
+php_value allow_url_fopen 1
+
+Order Allow,Deny
+Allow from all
+Deny from 176.9.104.38
+
+AddHandler application/x-httpd-php .rss .php
+
+php_value date.timezone Europe/Samara

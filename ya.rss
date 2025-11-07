@@ -1,0 +1,50 @@
+<? echo '<?xml version="1.0" encoding="windows-1251"?>'; ?>
+<rss xmlns:yandex="http://news.yandex.ru" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+<channel>
+<title>Барышская епархия</title>
+<link>http://www.barysh-eparhia.ru/</link>
+<description>Официальный сайт Барышской епархии Русской Православной Церкви</description>
+<yandex:logo>http://www.barysh-eparhia.ru/FOTO/1470.jpg</yandex:logo>
+<yandex:logo type="square">http://www.barysh-eparhia.ru/FOTO/1470.jpg</yandex:logo>
+<?
+	$data_aktual = Date("Y.m.d H:i", time() - 60*60*24*8);
+
+ mysql_connect("localhost", "host1409556", "0f7cd928"); 
+             $sel = mysql_query("SELECT * FROM host1409556_barysh.news_eparhia where data between '$data_aktual' and '9999.12.31 00:00' ORDER BY data DESC");
+
+			 for ($tr=0; $tr<mysql_num_rows($sel); $tr++)
+{
+$pr = mysql_fetch_array($sel);
+$data_today_pol = $pr[data];
+$data_today = substr($data_today_pol,0,10);
+$time_today = substr($data_today_pol,11,5);
+
+
+$dd_today = substr($data_today,8,2); // День
+$mm_today = substr($data_today,5,2); // Месяц
+$yy_today = substr($data_today,0,4); // Год
+$data_today = $dd_today.'.'.$mm_today.'.'.$yy_today;
+$d_ned = strftime("%a", strtotime($data_today));
+$d_mes = strftime("%b", strtotime($data_today));
+
+  	$patterns = array ('/(?:\/{3})(.+)(?:\/{3})/U', '/(?:\|{3})(.+)(?:\|{3})/U', '/(?:\{{3})(http:\/\/[^\s\[<\(\)\|]+)(?:\}{3})-(?:\{{3})([^}]+)(?:\}{3})/i', '/(?:\{{3})(http:\/\/[^\s\[<\(\)\|]+)(?:\}{3})/i', '/(?:\{{3})([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3}))(?:\}{3})/',  '/@R(\d+)[-]?([^@]*)@/', '/@L(\d+)[-]?([^@]*)@/', '/(?:\[{3})(([0-9]*[^\]{3}]*)*)(?:\]{3})/', '/\'/', '/\"/');
+	$replace = array ('${1}', '${1}', '${2}', '${1}', '${1}',  '', '', '', '&apos;', '&quot;');
+	$text = preg_replace($patterns, $replace, $pr[text]);
+
+echo '<item>
+<title>'.$pr[tema].'</title>
+<link>http://www.barysh-eparhia.ru/news_show.php?data='.$pr[data].'</link>
+<description>'.$pr[kratko].'</description>
+<category>Новости епархии</category>
+<pubDate>'.$d_ned.', '.$dd_today.' '.$d_mes.' '.$yy_today.' '.$time_today.':00 +0300</pubDate>
+<yandex:genre>message</yandex:genre>
+<yandex:full-text>'.$text.'</yandex:full-text>
+</item>';
+
+}
+
+?>
+
+
+</channel>
+</rss>

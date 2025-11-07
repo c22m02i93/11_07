@@ -1,0 +1,11 @@
+User-Agent: Googlebot
+Disallow: /my
+Crawl-delay: 5
+
+User-Agent: Yandex
+Disallow: /my
+Crawl-delay: 5
+
+User-Agent: *
+Disallow: /my
+Crawl-delay: 5

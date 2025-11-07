@@ -9,7 +9,7 @@ $name_user=$_SESSION['name_user'];
 <?
 include 'head.php';
 ?>
-<title>Архиерейское служение</title>
+<title>ГЂГ°ГµГЁГҐГ°ГҐГ©Г±ГЄГ®ГҐ Г±Г«ГіГ¦ГҐГ­ГЁГҐ</title>
 
 </head>
 <body>
@@ -28,7 +28,7 @@ $data_year = $_POST['data_year'];
 ?>
 
 <div id="osnovnoe">
-<h1>Архиерейское служение</h1>
+<h1>ГЂГ°ГµГЁГҐГ°ГҐГ©Г±ГЄГ®ГҐ Г±Г«ГіГ¦ГҐГ­ГЁГҐ</h1>
 
 <? 
   if(!isset($_GET['page'])){
@@ -39,10 +39,26 @@ else{
   if($p < 1) $p = 1;
 }
 $num_elements = 15;
-$total = mysql_result(mysql_query("SELECT COUNT(*) FROM host1409556_barysh.raspisanie"),0,0); //Подсчет общего числа записей
-$num_pages = ceil($total / $num_elements); //Подсчет числа страниц
+$cover_html = '';
+if (!empty($res['sluzba'])) {
+	$sluzba_data = mysql_real_escape_string($res['sluzba']);
+	$cover_query = mysql_query("SELECT oblozka FROM host1409556_barysh.news_eparhia WHERE data = '$sluzba_data' LIMIT 1");
+	if ($cover_query && mysql_num_rows($cover_query) == 0) {
+		$cover_query = mysql_query("SELECT oblozka FROM host1409556_barysh.news_eparhia_cron WHERE data = '$sluzba_data' LIMIT 1");
+	}
+	if ($cover_query && mysql_num_rows($cover_query) > 0) {
+		$cover_row = mysql_fetch_array($cover_query);
+		if (!empty($cover_row['oblozka'])) {
+			$cover_path = $cover_row['oblozka'];
+			$cover_html = '<span class="photos"><a href="FOTO/'.$cover_path.'.jpg" rel="example_group" title=""><img style="box-shadow: 2px 2px 5px rgba(0,0,0,0.3); display: inline; float: left; border: 1px solid #C3D7D4; margin: 0 10px 5px 10px; padding: 10px; width: 150px; height: auto;" src="FOTO/'.$cover_path.'.jpg" alt="" /></a></span>';
+		}
+	}
+}
+
+echo $cover_html.'<p>'.$text;
+$num_pages = ceil($total / $num_elements); //ГЏГ®Г¤Г±Г·ГҐГІ Г·ГЁГ±Г«Г  Г±ГІГ°Г Г­ГЁГ¶
 if ($p > $num_pages) $p = $num_pages;
-$start = ($p - 1) * $num_elements; //Стартовая позиция выборки из БД
+$start = ($p - 1) * $num_elements; //Г‘ГІГ Г°ГІГ®ГўГ Гї ГЇГ®Г§ГЁГ¶ГЁГї ГўГ»ГЎГ®Г°ГЄГЁ ГЁГ§ ГЃГ„
                     
 					
   echo GetNav($p, $num_pages, "raspisanie").'<hr />';
@@ -60,7 +76,7 @@ echo '<br />';
 	$text = preg_replace($patterns, $replace, $res[text]);
 
 echo '<p>'.$text;
-if ($res['sluzba']) echo ' + <a href="news_show.php?data='.$res['sluzba'].'"><b>СТАТЬЯ</b></a>';
+if ($res['sluzba']) echo ' + <a href="news_show.php?data='.$res['sluzba'].'"><b>Г‘Г’ГЂГ’ГњГџ</b></a>';
 echo '</p><br />
 
   <hr />
